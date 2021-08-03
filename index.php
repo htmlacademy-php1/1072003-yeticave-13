@@ -43,6 +43,17 @@ $ads = [
         'url' => 'img/lot-6.jpg',
     ],
 ];
+
+function format_amount (int $num) {
+
+    $amount = ceil($num);
+
+    if ($amount > 1000) {
+        $amount = number_format($amount, 0, '', ' ');
+    }
+
+    return $amount . " ₽";
+};
 ?>
 <!DOCTYPE html>
 <html lang="ru">
@@ -85,7 +96,6 @@ $ads = [
                 </ul>
 
             <?php endif; ?>
-        <!-- здесь должен быть PHP код для показа меню и данных пользователя -->
 
         </nav>
     </div>
@@ -97,7 +107,7 @@ $ads = [
         <p class="promo__text">На нашем интернет-аукционе ты найдёшь самое эксклюзивное сноубордическое и горнолыжное снаряжение.</p>
         <ul class="promo__list">
             <?php foreach ($categories as $val): ?>
-            <!--заполните этот список из массива категорий-->
+
                 <li class="promo__item promo__item--boards">
                     <a class="promo__link" href="pages/all-lots.html"><?= $val ?></a>
                 </li>
@@ -110,7 +120,7 @@ $ads = [
         </div>
         <ul class="lots__list">
             <?php foreach($ads as $key => $val) : ?>
-            <!--заполните этот список из массива с товарами-->
+
                 <li class="lots__item lot">
                     <div class="lot__image">
                         <img src="<?= $val['url']; ?>" width="350" height="260" alt="<?= $val['title']; ?>">
@@ -121,7 +131,7 @@ $ads = [
                         <div class="lot__state">
                             <div class="lot__rate">
                                 <span class="lot__amount"><?= $val['price']; ?></span>
-                                <span class="lot__cost"><?= $val['price']; ?><b class="rub">р</b></span>
+                                <span class="lot__cost"><?= format_amount($val['price']); ?>
                             </div>
                             <div class="lot__timer timer">
                                 12:23
@@ -138,7 +148,6 @@ $ads = [
 <footer class="main-footer">
     <nav class="nav">
         <ul class="nav__list container">
-            <!--заполните этот список из массива категорий-->
             <?php foreach($categories as $val): ?>
                 <li class="nav__item">
                     <a href="pages/all-lots.html"><?= $val ?></a>
