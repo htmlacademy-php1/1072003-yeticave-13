@@ -1,48 +1,59 @@
 <?php
 $is_auth = rand(0, 1);
 
-$user_name = 'Татьяна'; // укажите здесь ваше имя
+$user_name = "Татьяна"; // укажите здесь ваше имя
 
-$categories = ['Доски и лыжи', 'Крепления', 'Ботинки', 'Одежда', 'Инструменты', 'Разное'];
+$categories = ["Доски и лыжи", "Крепления", "Ботинки", "Одежда", "Инструменты", "Разное"];
 
 $ads = [
     [
-        'title' => '2014 Rossignol District Snowboard',
-        'category' => 'Доски и лыжи',
-        'price' => 10999,
-        'url' => 'img/lot-1.jpg'
+        "title" => "2014 Rossignol District Snowboard",
+        "category" => "Доски и лыжи",
+        "price" => 10999,
+        "url" => "img/lot-1.jpg"
     ],
     [
-        'title' => 'DC Ply Mens 2016/2017 Snowboard',
-        'category' => 'Доски и лыжи',
-        'price' => 159999,
-        'url' => 'img/lot-2.jpg',
+        "title" => "DC Ply Mens 2016/2017 Snowboard",
+        "category" => "Доски и лыжи",
+        "price" => 159999,
+        "url" => "img/lot-2.jpg",
     ],
     [
-        'title' => 'Крепления Union Contact Pro 2015 года размер L/XL',
-        'category' => 'Крепления',
-        'price' => 8000,
-        'url' => 'img/lot-3.jpg',
+        "title" => "Крепления Union Contact Pro 2015 года размер L/XL",
+        "category" => "Крепления",
+        "price" => 8000,
+        "url" => "img/lot-3.jpg",
     ],
     [
-        'title' => 'Ботинки для сноуборда DC Mutiny Charocal',
-        'category' => 'Ботинки',
-        'price' => 10999,
-        'url' => 'img/lot-4.jpg',
+        "title" => "Ботинки для сноуборда DC Mutiny Charocal",
+        "category" => "Ботинки",
+        "price" => 10999,
+        "url" => "img/lot-4.jpg",
     ],
     [
-        'title' => 'Куртка для сноуборда DC Mutiny Charocal',
-        'category' => 'Одежда',
-        'price' => 7500,
-        'url' => 'img/lot-5.jpg',
+        "title" => "Куртка для сноуборда DC Mutiny Charocal",
+        "category" => "Одежда",
+        "price" => 7500,
+        "url" => "img/lot-5.jpg",
     ],
     [
-        'title' => 'Маска Oakley Canopy',
-        'category' => 'Разное',
-        'price' => 5400,
-        'url' => 'img/lot-6.jpg',
+        "title" => "Маска Oakley Canopy",
+        "category" => "Разное",
+        "price" => 5400,
+        "url" => "img/lot-6.jpg",
     ],
 ];
+
+function format_amount (int $num) {
+
+    $amount = ceil($num);
+
+    if ($amount > 1000) {
+        $amount = number_format($amount, 0, "", " ");
+    }
+
+    return "$amount ₽";
+};
 ?>
 <!DOCTYPE html>
 <html lang="ru">
@@ -85,7 +96,6 @@ $ads = [
                 </ul>
 
             <?php endif; ?>
-        <!-- здесь должен быть PHP код для показа меню и данных пользователя -->
 
         </nav>
     </div>
@@ -97,7 +107,7 @@ $ads = [
         <p class="promo__text">На нашем интернет-аукционе ты найдёшь самое эксклюзивное сноубордическое и горнолыжное снаряжение.</p>
         <ul class="promo__list">
             <?php foreach ($categories as $val): ?>
-            <!--заполните этот список из массива категорий-->
+
                 <li class="promo__item promo__item--boards">
                     <a class="promo__link" href="pages/all-lots.html"><?= $val ?></a>
                 </li>
@@ -110,18 +120,18 @@ $ads = [
         </div>
         <ul class="lots__list">
             <?php foreach($ads as $key => $val) : ?>
-            <!--заполните этот список из массива с товарами-->
+
                 <li class="lots__item lot">
                     <div class="lot__image">
-                        <img src="<?= $val['url']; ?>" width="350" height="260" alt="<?= $val['title']; ?>">
+                        <img src="<?= $val["url"]; ?>" width="350" height="260" alt="<?= $val["title"]; ?>">
                     </div>
                     <div class="lot__info">
-                        <span class="lot__category"><?= $val['category']; ?></span>
-                        <h3 class="lot__title"><a class="text-link" href="pages/lot.html"><?= $val['title']; ?></a></h3>
+                        <span class="lot__category"><?= $val["category"]; ?></span>
+                        <h3 class="lot__title"><a class="text-link" href="pages/lot.html"><?= $val["title"]; ?></a></h3>
                         <div class="lot__state">
                             <div class="lot__rate">
-                                <span class="lot__amount"><?= $val['price']; ?></span>
-                                <span class="lot__cost"><?= $val['price']; ?><b class="rub">р</b></span>
+                                <span class="lot__amount"><?= $val["price"]; ?></span>
+                                <span class="lot__cost"><?= format_amount($val["price"]); ?>
                             </div>
                             <div class="lot__timer timer">
                                 12:23
@@ -138,7 +148,6 @@ $ads = [
 <footer class="main-footer">
     <nav class="nav">
         <ul class="nav__list container">
-            <!--заполните этот список из массива категорий-->
             <?php foreach($categories as $val): ?>
                 <li class="nav__item">
                     <a href="pages/all-lots.html"><?= $val ?></a>
