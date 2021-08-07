@@ -11,9 +11,3 @@ function format_amount (int $num) {
     return "$amount ₽";
 };
 
-function esc ($str) {
-
-    $text = htmlspecialchars($str);
-
-    return $text;
-};
