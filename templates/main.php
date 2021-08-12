@@ -28,8 +28,11 @@
                                 <span class="lot__amount"><?= htmlspecialchars($val["price"]); ?></span>
                                 <span class="lot__cost"><?= format_amount($val["price"]); ?>
                             </div>
-                            <div class="lot__timer timer">
-                                12:23
+                            <?php
+                                $arr = get_dt_range($val["dt_end"]);
+                            ?>
+                            <div class="lot__timer timer <?= $arr['hours'] === '00' ? 'timer--finishing' : ''; ?>">
+                                <?= "{$arr['hours']} : {$arr['minutes']}" ?>
                             </div>
                         </div>
                     </div>
