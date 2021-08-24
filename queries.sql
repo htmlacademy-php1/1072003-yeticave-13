@@ -13,11 +13,11 @@ VALUES (NOW(), 'rand@mail.com', 'Rand', '12345', '12345'),
 
 INSERT INTO lot (dt_add, name, category, url_img, start_cost, dt_end, step_bet, user_id, winner_id, category_id)
 VALUES (NOW(), '2014 Rossignol District Snowboard', 'Доски и лыжи', 'img/lot-1.jpg', 10999, DATE_ADD(NOW(), INTERVAL 1 DAY), 1000, 1, 3, 1),
-('2021-08-01', 'DC Ply Mens 2016/2017 Snowboard', 'Доски и лыжи', 'img/lot-2.jpg', 159999, DATE_ADD(NOW(), INTERVAL 2 DAY), 10000, 2, 3, 1),
+('2021-08-23', 'DC Ply Mens 2016/2017 Snowboard', 'Доски и лыжи', 'img/lot-2.jpg', 159999, DATE_ADD(NOW(), INTERVAL 2 DAY), 10000, 2, 3, 1),
 ('2021-08-21', 'Крепления Union Contact Pro 2015 года размер L/XL', 'Крепления', 'img/lot-3.jpg', 8000, DATE_ADD(NOW(), INTERVAL 1 DAY), 500, 1, 3, 2),
-('2021-08-16', 'Ботинки для сноуборда DC Mutiny Charocal', 'Ботинки', 'img/lot-4.jpg', 10999, DATE_ADD(NOW(), INTERVAL 2 DAY), 1000, 1, 3, 3),
+('2021-08-24', 'Ботинки для сноуборда DC Mutiny Charocal', 'Ботинки', 'img/lot-4.jpg', 10999, DATE_ADD(NOW(), INTERVAL 2 DAY), 1000, 1, 3, 3),
 (DATE_ADD(NOW(), INTERVAL -1 HOUR), 'Куртка для сноуборда DC Mutiny Charocal', 'Одежда', 'img/lot-5.jpg', 7500, DATE_ADD(NOW(), INTERVAL 1 DAY), 500, 2, 3, 4),
-('2021-08-13', 'Маска Oakley Canopy', 'Разное', 'img/lot-6.jpg', 5400, DATE_ADD(NOW(), INTERVAL 2 DAY), 100, 2, 3, 5);
+('2021-08-22', 'Маска Oakley Canopy', 'Разное', 'img/lot-6.jpg', 5400, DATE_ADD(NOW(), INTERVAL 2 DAY), 100, 2, 3, 5);
 
 
 INSERT INTO bet (dt_bet, sum, user_id, lot_id)
