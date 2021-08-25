@@ -21,7 +21,7 @@ WHERE dt_add > DATE_SUB(NOW(), INTERVAL 7 DAY)";
 $res = mysqli_query($con, $sql_lot);
 
 if (!$res) {
-   print("Ошибка: " . mysqli_error($con));
+    print("Ошибка: " . mysqli_error($con));
     exit;
 }
 
