@@ -1,5 +1,9 @@
 <?php
 
+$is_auth = rand(0, 1);
+
+$user_name = "Татьяна"; // укажите здесь ваше имя
+
 function format_amount (int $num) {
 
     $amount = ceil($num);
