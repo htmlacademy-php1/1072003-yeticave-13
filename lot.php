@@ -4,6 +4,13 @@ require_once('helpers.php');
 require_once('functions.php');
 require_once('connection.php');
 
+if (!isset($_GET['id'])) {
+  http_response_code(404);
+  exit("Ошибка подключения: не указан id");
+}
+
+$id = (int) $_GET['id'];
+
 $sql_category = "SELECT * FROM category";
 
 $result = mysqli_query($con, $sql_category);
@@ -15,9 +22,9 @@ if(!$result) {
 
 $categories = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
-$sql_lot = "SELECT l.id, l.name, l.start_cost, l.url_img, c.title FROM lot l
+$sql_lot = "SELECT l.name, l.start_cost, l.url_img, c.title FROM lot l
 LEFT JOIN category c ON l.category_id = c.id
-WHERE dt_add > DATE_SUB(NOW(), INTERVAL 7 DAY)";
+WHERE l.id = $id";
 $res = mysqli_query($con, $sql_lot);
 
 if (!$res) {
@@ -25,17 +32,17 @@ if (!$res) {
     exit;
 }
 
-$ads = mysqli_fetch_all($res, MYSQLI_ASSOC);
+$lot = mysqli_fetch_all($res, MYSQLI_ASSOC);
 
-$content = include_template('main.php', [
+$content = include_template('lot_template.php', [
     'categories' => $categories,
-    'ads' => $ads,
+    'lot' => $lot,
 ]);
 
 $layout_content = include_template('layout.php', [
     'content' => $content,
     'categories' => $categories,
-    'title' => 'YetiCave - Главная страница',
+    'title' => $lot['name'],
     'user_name' => $user_name,
     'is_auth' => $is_auth,
 ]);
