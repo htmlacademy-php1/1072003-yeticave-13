@@ -16,7 +16,6 @@ $sql_category = "SELECT * FROM category";
 $result = mysqli_query($con, $sql_category);
 
 if(!$result) {
-    //print("Ошибка: " . mysqli_error($con));
     $error = mysqli_error($con);
     $content = include_template('error.php', ['error' => $error]);
     print($content);
@@ -31,7 +30,6 @@ WHERE l.id = $id";
 $res = mysqli_query($con, $sql_lot);
 
 if (!$res) {
-    //print("Ошибка: " . mysqli_error($con));
     $error = mysqli_error($con);
     $content = include_template('error.php', ['error' => $error]);
     print($content);
