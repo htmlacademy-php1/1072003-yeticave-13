@@ -15,7 +15,7 @@ if(!$result) {
 
 $categories = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
-$sql_lot = "SELECT l.id, l.name, l.start_cost, l.url_img, c.title FROM lot l
+$sql_lot = "SELECT l.id, l.name, l.start_cost, l.url_img, l.dt_end, c.title FROM lot l
 LEFT JOIN category c ON l.category_id = c.id
 WHERE dt_add > DATE_SUB(NOW(), INTERVAL 7 DAY)";
 $res = mysqli_query($con, $sql_lot);
