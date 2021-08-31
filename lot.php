@@ -6,6 +6,7 @@ require_once('connection.php');
 
 if (!isset($_GET['id'])) {
   http_response_code(404);
+  show_error();
   exit("Ошибка подключения: не выбран лот");
 }
 
@@ -16,9 +17,7 @@ $sql_category = "SELECT * FROM category";
 $result = mysqli_query($con, $sql_category);
 
 if(!$result) {
-    $error = mysqli_error($con);
-    $content = include_template('error.php', ['error' => $error]);
-    print($content);
+    show_error($con);
     exit;
 }
 
@@ -30,9 +29,7 @@ WHERE l.id = $id";
 $res = mysqli_query($con, $sql_lot);
 
 if (!$res) {
-    $error = mysqli_error($con);
-    $content = include_template('error.php', ['error' => $error]);
-    print($content);
+    show_error($con);
     exit;
 }
 
