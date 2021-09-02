@@ -23,6 +23,7 @@ CREATE TABLE lot (
   category VARCHAR(255) NOT NULL,
   url_img VARCHAR(128) NOT NULL,
   start_cost INT NOT NULL,
+  description VARCHAR(1000),
   dt_end DATETIME,
   step_bet INT UNSIGNED NOT NULL,
   user_id INT UNSIGNED NOT NULL,

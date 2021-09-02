@@ -32,3 +32,10 @@ function get_dt_range ($date) {
 
     return $arr;
 };
+
+function show_error ($con) {
+    $error = mysqli_error($con);
+    $content = include_template('error.php', ['error' => $error]);
+
+    return print($content);
+}
