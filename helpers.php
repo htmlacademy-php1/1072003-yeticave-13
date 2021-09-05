@@ -143,4 +143,53 @@ function include_template($name, array $data = []) {
     return $result;
 }
 
+function getPostVal($name) {
+    return filter_input(INPUT_POST, $name);
+}
 
+function validateCategory($id, $allowed_list) {
+    if (!in_array($id, $allowed_list)) {
+        return "Указана несуществующая категория";
+    }
+
+    return null;
+}
+
+function validateLength($value, $min, $max) {
+    if ($value) {
+        $len = strlen($value);
+        if ($len < $min or $len > $max) {
+            return "Значение должно быть от $min до $max символов";
+        }
+    }
+
+    return null;
+}
+
+function validateRate ($value) {
+    if (!is_numeric($value) OR $value <= 0) {
+        return "Значение должно быть числом больше 0";
+    }
+
+    return null;
+}
+
+function validateStep ($value) {
+    if (!is_int($value) OR $value <= 0) {
+        return "Значение должно быть целым числом больше 0";
+    }
+
+    return null;
+}
+
+function validateDate ($value) {
+    if(!is_date_valid($value)) {
+        return "Значение должно быть в формате «ГГГГ-ММ-ДД»";
+    }
+
+    if(strtotime($value) < (time() + 86400)) {
+        return "Указанная дата должна больше текущей даты, хотя бы на один день";
+    }
+
+    return null;
+}
