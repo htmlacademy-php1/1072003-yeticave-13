@@ -175,7 +175,7 @@ function validateRate ($value) {
 }
 
 function validateStep ($value) {
-    if (!is_int($value) OR $value <= 0) {
+    if (!ctype_digit($value) OR $value <= 0) {
         return "Значение должно быть целым числом больше 0";
     }
 

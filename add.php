@@ -17,7 +17,7 @@ $categories = mysqli_fetch_all($result, MYSQLI_ASSOC);
 $categories_id = array_column($categories, 'id');
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $reqiured = ['lot-name', 'category', 'message', 'lot-rate', 'lot-step', 'lot-date'];
+    $reqiured = ['lot-name', 'category', 'message', 'lot-rate', 'lot-step', 'lot-date', 'lot-img'];
     $errors = [];
 
     $rules = [
@@ -54,31 +54,62 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     }
 
-    $errors = array_filter($errors);
-
     if (!empty($_FILES['lot-img']['name'])) {
         $tmp_name = $_FILES['lot-img']['tmp_name'];
-        $path = $_FILES['lot-img']['name'];
+        $file_name = $_FILES['lot-img']['name'];
 
-        $finfo = finfo_open(FILEINFO_MIME_TYPE);
-        $file_type = finfo_file($finfo, $tmp_name);
-        if ($file_type !== "image/png" OR $file_type !== "image/jpeg") {
-            $errors['lot-img'] = 'Загрузите картинку в формате jpg, jpeg, png';
+        $type_file = mime_content_type($tmp_name);
+        if ($type_file == 'image/jpeg' || $type_file == 'image/png' || $type_file == 'image/jpg') {
+            move_uploaded_file($tmp_name, "uploads/$file_name");
+            $lot['url_img'] = "uploads/$file_name";
         }
         else {
-            move_uploaded_file($tmp_name, 'uploads/' . $_FILES['lot-img']['name']);
-            $lot['path'] = $_FILES['lot-img']['name'];
+            $errors['lot-img'] = 'Загрузите картинку в формате jpg, jpeg, png';
         }
     } else {
         $errors['lot-img'] = 'Вы не загрузили файл';
         }
 
+    $errors = array_filter($errors);
 
     if (count($errors)) {
         $content = include_template('add_lot.php', ['lot' => $lot, 'errors' => $errors, 'categories' => $categories]);
-    }
-} else {
-    $content = include_template('add_lot.php', ['lot' => $lot, 'categories' => $categories]);
+    } else {
+        $dt_add = date('Y-m-d H:i:s');
+        $user_id = 1;
+        $winner_id = 2;
+        $sql_add = 'INSERT INTO lot (dt_add, name, category, url_img, start_cost, description, dt_end, step_bet, user_id, winner_id, category_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+        $stmt = mysqli_prepare($con, $sql_add);
+        mysqli_stmt_bind_param($stmt, 'sssssssiiii', $dt_add, getPostVal('lot-name'), getPostVal('category'), $lot['url_img'], getPostVal('lot-rate'), getPostVal('message'), getPostVal('lot-date'), getPostVal('lot-step'), $user_id, $winner_id, getPostVal('category'));
+        $res = mysqli_stmt_execute($stmt);
+
+        if(!$res) {
+            show_error($con);
+            exit;
+        }
+
+        $lot_id = mysqli_insert_id($con);
+
+        $sql_lot = "SELECT l.name, l.start_cost, l.url_img, l.description, l.dt_end, c.title FROM lot l
+        LEFT JOIN category c ON l.category_id = c.id
+        WHERE l.id = $lot_id";
+        $result = mysqli_query($con, $sql_lot);
+
+        if (!$result) {
+            show_error($con);
+            exit;
+        }
+
+        $lot = mysqli_fetch_array($result, MYSQLI_ASSOC);
+
+        $content = include_template('lot_template.php', [
+            'categories' => $categories,
+            'lot' => $lot,
+        ]);
+        header("Location: lot.php?id=" . $lot_id);
+        }
+    } else{
+        $content = include_template('add_lot.php', ['lot' => $lot, 'categories' => $categories]);
 }
 
 $layout_content = include_template('layout.php', [
