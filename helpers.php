@@ -166,7 +166,7 @@ function validateLength($value, $min, $max) {
     return null;
 }
 
-function validateRate ($value) {
+function validateRate($value) {
     if (!is_numeric($value) OR $value <= 0) {
         return "Значение должно быть числом больше 0";
     }
@@ -174,7 +174,7 @@ function validateRate ($value) {
     return null;
 }
 
-function validateStep ($value) {
+function validateStep($value) {
     if (!ctype_digit($value) OR $value <= 0) {
         return "Значение должно быть целым числом больше 0";
     }
@@ -182,7 +182,7 @@ function validateStep ($value) {
     return null;
 }
 
-function validateDate ($value) {
+function validateDate($value) {
     if(!is_date_valid($value)) {
         return "Значение должно быть в формате «ГГГГ-ММ-ДД»";
     }

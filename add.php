@@ -8,12 +8,12 @@ $sql_category = "SELECT * FROM category";
 
 $result = mysqli_query($con, $sql_category);
 
-if(!$result) {
-    show_error($con);
-    exit;
+$categories = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
+if (!$categories) {
+    exit('Ошибка базы данных');
 }
 
-$categories = mysqli_fetch_all($result, MYSQLI_ASSOC);
 $categories_id = array_column($categories, 'id');
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -50,31 +50,30 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
 
         if (in_array($key, $reqiured) && empty($value)) {
-            $errors[$key] = "Поле $key надо заполнить";
+            $errors[$key] = "Поле надо заполнить";
         }
     }
 
     if (!empty($_FILES['lot-img']['name'])) {
         $tmp_name = $_FILES['lot-img']['tmp_name'];
-        $file_name = $_FILES['lot-img']['name'];
-
+        $file_name = uniqid() . $_FILES['lot-img']['name'];
         $type_file = mime_content_type($tmp_name);
-        if ($type_file == 'image/jpeg' || $type_file == 'image/png' || $type_file == 'image/jpg') {
-            move_uploaded_file($tmp_name, "uploads/$file_name");
-            $lot['url_img'] = "uploads/$file_name";
-        }
-        else {
+
+        if (!($type_file == 'image/jpeg' || $type_file == 'image/png' || $type_file == 'image/jpg')) {
             $errors['lot-img'] = 'Загрузите картинку в формате jpg, jpeg, png';
         }
     } else {
         $errors['lot-img'] = 'Вы не загрузили файл';
-        }
+    }
 
     $errors = array_filter($errors);
 
     if (count($errors)) {
         $content = include_template('add_lot.php', ['lot' => $lot, 'errors' => $errors, 'categories' => $categories]);
     } else {
+        move_uploaded_file($tmp_name, "uploads/$file_name");
+        $lot['url_img'] = "uploads/$file_name";
+
         $dt_add = date('Y-m-d H:i:s');
         $user_id = 1;
         $winner_id = 2;
@@ -84,8 +83,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $res = mysqli_stmt_execute($stmt);
 
         if(!$res) {
-            show_error($con);
-            exit;
+            exit('Ошибка базы данных');
         }
 
         $lot_id = mysqli_insert_id($con);
@@ -95,21 +93,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         WHERE l.id = $lot_id";
         $result = mysqli_query($con, $sql_lot);
 
-        if (!$result) {
-            show_error($con);
-            exit;
-        }
-
         $lot = mysqli_fetch_array($result, MYSQLI_ASSOC);
 
-        $content = include_template('lot_template.php', [
-            'categories' => $categories,
-            'lot' => $lot,
-        ]);
-        header("Location: lot.php?id=" . $lot_id);
+        if (!$lot) {
+            $error = mysqli_error($con);
+            $message = $error ? $error : "Страницы не существует";
+            $content = include_template('error.php', ['error' => $message]);
+        } else {
+            header("Location: lot.php?id=" . $lot_id);
         }
-    } else{
-        $content = include_template('add_lot.php', ['lot' => $lot, 'categories' => $categories]);
+    }
+} else {
+    $content = include_template('add_lot.php', ['lot' => $lot, 'categories' => $categories]);
 }
 
 $layout_content = include_template('layout.php', [
