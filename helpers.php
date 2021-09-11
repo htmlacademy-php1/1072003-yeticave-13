@@ -193,3 +193,20 @@ function validateDate($value) {
 
     return null;
 }
+
+function validateEmail($value, $con) {
+   if (!filter_var($value, FILTER_VALIDATE_EMAIL)) {
+        return "Введите корректный email";
+    }
+
+    $email = mysqli_real_escape_string($con, $_POST['email']);
+
+        $sql_email_user = "SELECT id FROM user WHERE email = '$email'";
+        $res = mysqli_query($con, $sql_email_user);
+
+        if (mysqli_num_rows($res) > 0) {
+            return "Пользователь с этим email уже зарегистрирован";
+        }
+
+    return null;
+}

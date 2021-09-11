@@ -16,6 +16,11 @@ if (!$categories) {
 
 $categories_id = array_column($categories, 'id');
 
+if (!isset($_SESSION['user_id'])) {
+  http_response_code(403);
+  exit("Для добавления лота необходимо зарегистрироваться на сайте.");
+}
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $reqiured = ['lot-name', 'category', 'message', 'lot-rate', 'lot-step', 'lot-date', 'lot-img'];
     $errors = [];
