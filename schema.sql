@@ -46,3 +46,4 @@ CREATE TABLE bet (
   FOREIGN KEY (lot_id) REFERENCES lot(id) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
+CREATE FULLTEXT INDEX lot_ft_search ON lot(name, description);
