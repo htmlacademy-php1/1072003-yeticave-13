@@ -10,7 +10,7 @@
     </nav>
     <div class="container">
       <section class="lots">
-        <h2>Результаты поиска по запросу «<span><?=htmlspecialchars('search'); ?></span>»</h2>
+        <h2>Результаты поиска по запросу «<span><?=htmlspecialchars($_GET['search']); ?></span>»</h2>
         <h3><?php if(count($results_search) === 0): ?> Ничего не найдено по Вашему запросу <?php endif; ?></h3>
         <ul class="lots__list">
           <?php foreach ($results_search as $result_search): ?>
@@ -27,7 +27,7 @@
                     <span class="lot__cost"><?=htmlspecialchars(format_amount($result_search['start_cost'])) ?></span>
                   </div>
                   <?php
-                    $arr = get_dt_range($val["dt_end"]);
+                    $arr = get_dt_range($result_search["dt_end"]);
                   ?>
                    <div class="lot__timer timer <?= $arr['hours'] === '00' ? 'timer--finishing' : ''; ?>">
                         <?= "{$arr['hours']} : {$arr['minutes']}" ?>
@@ -38,12 +38,16 @@
           <?php endforeach; ?>
         </ul>
       </section>
+
+      <?php if ($pages_count > 1): ?>
       <ul class="pagination-list">
-        <?php foreach ($pages as $page): ?>
-          <li class="pagination-item <?php if($page < $cur_page): ?>pagination-item-prev<?php endif; ?>"> <a href="/?page=<?= $cur_page - 1 ;?>">Назад</a></li>
-          <li class="pagination-item <?php if ($page == $cur_page): ?>pagination__item--active<?php endif; ?>"><a href="/?page=<?=$page;?>"><?=$page;?></a></li>
-          <li class="pagination-item <?php if($page > $cur_page): ?>pagination-item-next<?php endif; ?>">  <a href="/?page=<?= $cur_page + 1 ;?>">Вперед</a></li>
+          <li class="pagination-item pagination-item-prev"><?php if($cur_page > 1): ?><a href="<?= $url . '&page=' . $prev ; ?>">Назад</a><?php endif; ?></li>
+          <?php for ($i = 1; $i <= $pages_count; $i++): ?>
+          <li class="pagination-item <?php if ($page === $i): ?>pagination__item--active<?php endif; ?>"><a href="<?= $url . '&page=' . $i; ?>"><?= $i; ?></a></li>
+          <?php endfor; ?>
+          <li class="pagination-item pagination-item-next"><?php if($cur_page < $pages_count): ?><a href="<?= $url . '&page=' . $next ; ?>">Вперед</a><?php endif; ?></li>
       </ul>
-      <?php endforeach; ?>
+    <?php endif; ?>
+
     </div>
   </main>

@@ -59,7 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                 $_SESSION['user_id'] = $user['id'];
                 $_SESSION['user_name'] = $user['name'];
-                header("Location: /index.php");
+                header("Location: index.php");
                 exit();
         }
     }
@@ -67,7 +67,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $content = include_template('login_template.php', ['categories' => $categories]);
 
     if (isset($_SESSION['user'])) {
-        header("Location: /index.php");
+        header("Location: index.php");
         exit();
     }
 }
